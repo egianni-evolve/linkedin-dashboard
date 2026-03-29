@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Erika Gianni — LinkedIn Insights Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --teal: #1a7a7a;
+    --teal-dark: #0d5c5c;
+    --teal-light: #e0f5f5;
+    --mint: #b8e0d2;
+    --gold: #d4b84f;
+    --coral: #d96b3f;
+    --peach: #f0a882;
+    --rose: #e8917e;
+    --bg: #faf9f7;
+    --card: #ffffff;
+    --text: #2a2a2a;
+    --text-muted: #6b6b6b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .header {
+    background: linear-gradient(135deg, var(--teal-dark), var(--teal));
+    color: white;
+    padding: 2.5rem 2rem 2rem;
+  }
+
+  .header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  .header p {
+    opacity: 0.85;
+    margin-top: 0.25rem;
+    font-size: 0.95rem;
+  }
+
+  .header .subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-top: 0.5rem;
+    font-style: italic;
+  }
+
+  .kpi-strip {
+    max-width: 1400px;
+    margin: -1.5rem auto 1.5rem;
+    padding: 0 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+  }
+
+  .kpi {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 1.25rem 1rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    text-align: center;
+    border-top: 4px solid var(--teal);
+  }
+
+  .kpi:nth-child(2) { border-top-color: var(--coral); }
+  .kpi:nth-child(3) { border-top-color: var(--gold); }
+  .kpi:nth-child(4) { border-top-color: var(--peach); }
+  .kpi:nth-child(5) { border-top-color: var(--mint); }
+  .kpi:nth-child(6) { border-top-color: var(--rose); }
+
+  .kpi-value {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--teal-dark);
+  }
+
+  .kpi:nth-child(2) .kpi-value { color: var(--coral); }
+  .kpi:nth-child(3) .kpi-value { color: #b8982e; }
+  .kpi:nth-child(4) .kpi-value { color: #c47838; }
+  .kpi:nth-child(5) .kpi-value { color: var(--teal); }
+  .kpi:nth-child(6) .kpi-value { color: var(--rose); }
+
+  .kpi-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+  }
+
+  .dashboard {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1rem 3rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+
+  .card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+
+  .card-full { grid-column: 1 / -1; }
+
+  .card h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--teal-dark);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .chart-container {
+    position: relative;
+    width: 100%;
+    height: 280px;
+  }
+
+  .chart-container.tall { height: 340px; }
+
+  /* Timeline */
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .timeline-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.75rem;
+    border-radius: 8px;
+    background: var(--teal-light);
+  }
+
+  .timeline-item:nth-child(even) { background: #fff8f0; }
+
+  .timeline-year {
+    font-weight: 800;
+    color: var(--teal-dark);
+    min-width: 80px;
+    font-size: 0.9rem;
+  }
+
+  .timeline-role {
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .timeline-company {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+  }
+
+  /* Skills */
+  .skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .skill-tag {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background: var(--teal-light);
+    color: var(--teal-dark);
+  }
+
+  .skill-tag:nth-child(3n+1) { background: #fef3e0; color: #8a6b1e; }
+  .skill-tag:nth-child(3n+2) { background: #fde8e0; color: #a04420; }
+
+  /* Recs */
+  .rec-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1rem;
+  }
+
+  .rec-card {
+    border-left: 4px solid var(--teal);
+    padding: 1rem;
+    background: var(--teal-light);
+    border-radius: 0 8px 8px 0;
+    font-size: 0.85rem;
+  }
+
+  .rec-card:nth-child(2n) {
+    border-left-color: var(--coral);
+    background: #fff5f0;
+  }
+
+  .rec-card:nth-child(3n) {
+    border-left-color: var(--gold);
+    background: #fefaed;
+  }
+
+  .rec-quote {
+    font-style: italic;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+  }
+
+  .rec-author {
+    font-weight: 700;
+    color: var(--teal-dark);
+    font-size: 0.8rem;
+  }
+
+  .rec-title {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+  }
+
+  /* Cert timeline */
+  .cert-year-group { margin-bottom: 1rem; }
+  .cert-year-label {
+    font-weight: 800;
+    color: var(--coral);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .cert-year-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e0e0e0;
+  }
+  .cert-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding-left: 0.5rem;
+  }
+  .cert-item {
+    font-size: 0.78rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    background: #f7f7f5;
+    border: 1px solid #e8e8e5;
+    color: var(--text);
+  }
+
+  /* Insight callout */
+  .insight-box {
+    background: linear-gradient(135deg, var(--teal-light), #f0faf8);
+    border: 2px solid var(--teal);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .insight-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+  }
+
+  .insight-content h3 {
+    font-size: 1rem;
+    color: var(--teal-dark);
+    margin-bottom: 0.5rem;
+  }
+
+  .insight-content p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* Inference tags */
+  .inference-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .inference-tag {
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    border: 2px solid;
+  }
+
+  /* Volunteer */
+  .vol-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 0.75rem;
+  }
+  .vol-card {
+    padding: 1rem;
+    border-radius: 8px;
+    background: #f7faf8;
+    border-left: 3px solid var(--mint);
+  }
+  .vol-card h4 { font-size: 0.9rem; color: var(--teal-dark); }
+  .vol-card p { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem; }
+
+  .footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 768px) {
+    .dashboard { grid-template-columns: 1fr; }
+    .kpi-strip { grid-template-columns: repeat(3, 1fr); }
+    .header h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <h1>Erika Gianni</h1>
+    <p>AI Strategy, Advisory & Consulting</p>
+    <p class="subtitle">LinkedIn Data Insights Dashboard</p>
+  </div>
+</div>
+
+<div class="kpi-strip">
+  <div class="kpi">
+    <div class="kpi-value">3,810</div>
+    <div class="kpi-label">Connections</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-value">19,200</div>
+    <div class="kpi-label">Reactions Given</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-value">3,005</div>
+    <div class="kpi-label">Comments Made</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-value">33</div>
+    <div class="kpi-label">Certifications</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-value">1,131</div>
+    <div class="kpi-label">People Followed</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-value">797</div>
+    <div class="kpi-label">Companies Followed</div>
+  </div>
+</div>
+
+<div class="dashboard">
+
+  <!-- Network Growth -->
+  <div class="card">
+    <h2>Network Growth Over Time</h2>
+    <div class="chart-container">
+      <canvas id="networkChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Engagement Activity -->
+  <div class="card">
+    <h2>Monthly Engagement (Mar 2025 - Feb 2026)</h2>
+    <div class="chart-container">
+      <canvas id="engagementChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Reaction Types -->
+  <div class="card">
+    <h2>How You React: Reaction Type Breakdown</h2>
+    <div class="chart-container">
+      <canvas id="reactionChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Top Companies in Network -->
+  <div class="card">
+    <h2>Top Companies in Your Network</h2>
+    <div class="chart-container">
+      <canvas id="companiesChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Endorsement Skills -->
+  <div class="card">
+    <h2>Top Endorsed Skills</h2>
+    <div class="chart-container tall">
+      <canvas id="endorsementChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Certifications Timeline -->
+  <div class="card">
+    <h2>Certification Journey (33 Credentials)</h2>
+    <div class="cert-year-group">
+      <div class="cert-year-label">2012-2015</div>
+      <div class="cert-list">
+        <span class="cert-item">NYU Digital Media Marketing</span>
+        <span class="cert-item">Cornell Data-Driven Marketing</span>
+      </div>
+    </div>
+    <div class="cert-year-group">
+      <div class="cert-year-label">2020</div>
+      <div class="cert-list">
+        <span class="cert-item">MIT Sustainability Certificate</span>
+        <span class="cert-item">MIT Business Analytics</span>
+      </div>
+    </div>
+    <div class="cert-year-group">
+      <div class="cert-year-label">2023</div>
+      <div class="cert-list">
+        <span class="cert-item">Certified Digital Marketing Professional</span>
+        <span class="cert-item">MIT AI Products & Services</span>
+        <span class="cert-item">AMA PCM Digital Marketing</span>
+        <span class="cert-item">MIT Digital Supply Chain</span>
+        <span class="cert-item">MIT COO Program</span>
+        <span class="cert-item">IDEO Designing Strategy</span>
+        <span class="cert-item">IDEO Activating Strategy</span>
+      </div>
+    </div>
+    <div class="cert-year-group">
+      <div class="cert-year-label">2024</div>
+      <div class="cert-list">
+        <span class="cert-item">IDEO Human-Centered Service Design</span>
+        <span class="cert-item">AI for Designers (IxDF)</span>
+        <span class="cert-item">Service Design (IxDF)</span>
+        <span class="cert-item">Accessibility (IxDF)</span>
+        <span class="cert-item">Tiny Habits Certified Coach</span>
+      </div>
+    </div>
+    <div class="cert-year-group">
+      <div class="cert-year-label">2025-2026 (AI Surge)</div>
+      <div class="cert-list">
+        <span class="cert-item">AI Prompting for Legal 101 & 201</span>
+        <span class="cert-item">Behavior Design (BJ Fogg)</span>
+        <span class="cert-item">AI Trainer Certification</span>
+        <span class="cert-item">Anthropic AI Fluency (x2)</span>
+        <span class="cert-item">Human-Centered AI Leadership</span>
+        <span class="cert-item">Agentic AI (DeepLearning.AI)</span>
+        <span class="cert-item">Certified AI Operator</span>
+        <span class="cert-item">Certified AI Educator</span>
+        <span class="cert-item">Prompt Engineering (Vanderbilt x3)</span>
+        <span class="cert-item">Managing AI Risks</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Career Timeline -->
+  <div class="card card-full">
+    <h2>Career Timeline</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-year">2025 - Now</div>
+        <div>
+          <div class="timeline-role">Consultant (Independent)</div>
+          <div class="timeline-company">Erika Gianni Consulting &mdash; Legal ops modernization, AI strategy</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2024</div>
+        <div>
+          <div class="timeline-role">VP of Legal Operations / Legal Operations</div>
+          <div class="timeline-company">Arcadia &mdash; Energy solutions, governance, risk, regulatory compliance</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2021 - 2024</div>
+        <div>
+          <div class="timeline-role">Vice President of Operations</div>
+          <div class="timeline-company">Bixal &mdash; Public-sector consulting, scaled from 200 to 400+ people</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2016 - 2021</div>
+        <div>
+          <div class="timeline-role">Director of Digital Strategy / Senior Manager</div>
+          <div class="timeline-company">Akamai Technologies &mdash; B2B digital transformation, UX strategy</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2007 - 2016</div>
+        <div>
+          <div class="timeline-role">Manager, Digital Business / Marketing</div>
+          <div class="timeline-company">Clarks &mdash; eCommerce, global digital launches, 8+ years</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2005 - 2007</div>
+        <div>
+          <div class="timeline-role">Marketing Specialist</div>
+          <div class="timeline-company">MGT of America &mdash; Public sector consulting</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skills -->
+  <div class="card">
+    <h2>Skills on Profile (76 Skills)</h2>
+    <div class="skills-grid">
+      <span class="skill-tag">AI Operations</span>
+      <span class="skill-tag">Strategy</span>
+      <span class="skill-tag">Artificial Intelligence</span>
+      <span class="skill-tag">AI Education</span>
+      <span class="skill-tag">Legal Operations</span>
+      <span class="skill-tag">Digital Strategy</span>
+      <span class="skill-tag">Behavior Design</span>
+      <span class="skill-tag">Operations Management</span>
+      <span class="skill-tag">E-commerce</span>
+      <span class="skill-tag">Digital Marketing</span>
+      <span class="skill-tag">UX Strategy</span>
+      <span class="skill-tag">Process Optimization</span>
+      <span class="skill-tag">Cross-functional Leadership</span>
+      <span class="skill-tag">Product Management</span>
+      <span class="skill-tag">Marketing Strategy</span>
+      <span class="skill-tag">Change Management</span>
+      <span class="skill-tag">Business Analytics</span>
+      <span class="skill-tag">Strategic Planning</span>
+      <span class="skill-tag">Program Management</span>
+      <span class="skill-tag">Digital Transformation</span>
+    </div>
+  </div>
+
+  <!-- Key Insights -->
+  <div class="card card-full">
+    <h2>Key Insights</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 1rem;">
+
+      <div class="insight-box">
+        <div class="insight-icon">&#x1F4C8;</div>
+        <div class="insight-content">
+          <h3>2025 Was Your Biggest Networking Year Ever</h3>
+          <p>597 new connections in 2025 alone, surpassing even 2020 (545, your MIT graduation year). Your pivot to AI consulting is driving serious network expansion.</p>
+        </div>
+      </div>
+
+      <div class="insight-box" style="border-color: var(--coral); background: linear-gradient(135deg, #fff5f0, #fff);">
+        <div class="insight-icon">&#x1F525;</div>
+        <div class="insight-content">
+          <h3>June 2025: Engagement Exploded</h3>
+          <p>Comments jumped 5x (232 in June vs. ~40 prior months) and shares tripled. Something catalyzed massive engagement. This coincides with your CRAFT certification and AI consulting launch.</p>
+        </div>
+      </div>
+
+      <div class="insight-box" style="border-color: var(--gold); background: linear-gradient(135deg, #fefaed, #fff);">
+        <div class="insight-icon">&#x1F393;</div>
+        <div class="insight-content">
+          <h3>21 Certifications in 2023-2026</h3>
+          <p>You earned 21 of your 33 certifications in the last 3 years. Clear trajectory: digital marketing to design thinking to AI. MIT COO Program + BJ Fogg Behavior Design + Anthropic AI Fluency = your unique trifecta.</p>
+        </div>
+      </div>
+
+      <div class="insight-box" style="border-color: var(--mint); background: linear-gradient(135deg, #eef8f0, #fff);">
+        <div class="insight-icon">&#x1F49C;</div>
+        <div class="insight-content">
+          <h3>You Lead with Appreciation</h3>
+          <p>42% of your reactions are LIKE, but 34% are APPRECIATION + PRAISE combined. You actively uplift others' work, not just passively consuming content. That is a distinctive engagement signature.</p>
+        </div>
+      </div>
+
+      <div class="insight-box" style="border-color: var(--rose); background: linear-gradient(135deg, #fef0ed, #fff);">
+        <div class="insight-icon">&#x1F3E2;</div>
+        <div class="insight-content">
+          <h3>Akamai Is Your Network Stronghold</h3>
+          <p>73 connections from Akamai alone, with 15 glowing recommendations from that era. Your digital transformation work there built a deep network of advocates who now hold senior roles at Google, Apple, HubSpot, Salesforce, and DraftKings.</p>
+        </div>
+      </div>
+
+      <div class="insight-box" style="border-color: var(--teal); background: linear-gradient(135deg, var(--teal-light), #fff);">
+        <div class="insight-icon">&#x1F30D;</div>
+        <div class="insight-content">
+          <h3>Your Recommendations Tell a Story</h3>
+          <p>32 detailed recommendations spanning 18 years. Recurring themes: "connector," "tireless," "user-centered," "systems thinker," "genuine." People consistently describe someone who builds bridges between teams and leads with both intellect and heart.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Recommendations Highlights -->
+  <div class="card card-full">
+    <h2>Recommendation Highlights (32 Total)</h2>
+    <div class="rec-grid">
+      <div class="rec-card">
+        <div class="rec-quote">"Erika has the rare ability to both think and lead the high level strategic direction as well as contribute in a hands on manner for tactical execution... Her experience in UX, Product Design, eCommerce technology and systems are key attributes."</div>
+        <div class="rec-author">Brian W.</div>
+        <div class="rec-title">SVP, Global Technology & Product Operations, DraftKings</div>
+      </div>
+      <div class="rec-card">
+        <div class="rec-quote">"One of her key super powers is that she's a true 'connector.' She understands the importance of establishing relationships across a company and putting people in contact with one another to make us all successful."</div>
+        <div class="rec-author">Jenn T.</div>
+        <div class="rec-title">UX Leader, Apple</div>
+      </div>
+      <div class="rec-card">
+        <div class="rec-quote">"Erika is very versatile, intelligent, and hard working and was instrumental in driving the impressive outcomes the team achieved... she has very strong overall UX skills combined with a sense of real business needs. Her versatility in understanding the full design process, the customer, and her extensive experience in technology allowed her to fill many different gaps."</div>
+        <div class="rec-author">Charley D.</div>
+        <div class="rec-title">SVP Service and Delivery, Mark43</div>
+      </div>
+      <div class="rec-card">
+        <div class="rec-quote">"Erika is an individual of strong ethics and integrity who always puts the team first. She has a strong background in digital strategy... She is a great leader to have on any executive team."</div>
+        <div class="rec-author">Matt R.</div>
+        <div class="rec-title">SVP Finance & Operations, Bixal</div>
+      </div>
+      <div class="rec-card">
+        <div class="rec-quote">"Erika relentlessly focused on making sure Product Management and Engineering were aligned with the business strategy... In all team discussions Erika was always the one representing voice of the customer, never shy of challenging the team's thinking with 'what's in it for our Customer?'"</div>
+        <div class="rec-author">Olga L.</div>
+        <div class="rec-title">VP, R&D Program Management, PTC</div>
+      </div>
+      <div class="rec-card">
+        <div class="rec-quote">"In my time at Clarks, no other colleague brought the same combination of a tireless work ethic and attention to detail as Erika... If I had one word to describe Erika, it would be determined."</div>
+        <div class="rec-author">Rick A.</div>
+        <div class="rec-title">VP Ecommerce, PUMA Group</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Volunteering -->
+  <div class="card">
+    <h2>Volunteering & Community</h2>
+    <div class="vol-grid">
+      <div class="vol-card">
+        <h4>Center for Hispanic Marketing Communication</h4>
+        <p>Advisory Board Chair (2026) at Florida State University. Since 2020.</p>
+      </div>
+      <div class="vol-card">
+        <h4>Women Applying AI</h4>
+        <p>Program Volunteer. Women-focused AI community. Since 2026.</p>
+      </div>
+      <div class="vol-card">
+        <h4>CCT Boston</h4>
+        <p>Pro bono strategic consulting for nonprofits. Since 2026.</p>
+      </div>
+      <div class="vol-card">
+        <h4>MyPath Global (Co-Founder)</h4>
+        <p>MIT IDEAS grant recipient. Women in tech/entrepreneurship in Kenya. 2019-2022.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== DEEP ANALYTICS SECTION ========== -->
+  <div class="card card-full" style="background: linear-gradient(135deg, var(--teal-dark), var(--teal)); color: white; margin-top: 1rem;">
+    <h2 style="color: white; font-size: 1.2rem; letter-spacing: 1px;">Deep Analytics</h2>
+    <p style="opacity: 0.85; font-size: 0.9rem;">Network composition, audience intelligence, posting correlation, relationship depth, and connection patterns.</p>
+  </div>
+
+  <!-- 1. Network Composition by Industry -->
+  <div class="card">
+    <h2>Your Network by Industry (3,811 Connections)</h2>
+    <div class="chart-container tall">
+      <canvas id="industryChart"></canvas>
+    </div>
+  </div>
+
+  <!-- 2. Company Follows by Theme -->
+  <div class="card">
+    <h2>Companies You Follow by Theme (798 Companies)</h2>
+    <div class="chart-container tall">
+      <canvas id="followsThemeChart"></canvas>
+    </div>
+  </div>
+
+  <!-- 3. Posts vs Connections Correlation -->
+  <div class="card card-full">
+    <h2>Does Posting Drive Connections? (r = 0.64, Strong Positive)</h2>
+    <div class="chart-container tall">
+      <canvas id="correlationChart"></canvas>
+    </div>
+    <div style="margin-top: 0.75rem; padding: 1rem; background: var(--teal-light); border-radius: 8px; font-size: 0.85rem;">
+      <strong>Correlation coefficient: r = 0.64</strong> (strong positive). Months where you posted more saw meaningfully more new connections. June 2025 was the inflection point: 21 posts drove 77 new connections, compared to near-zero posting and ~10-15 connections/month in early 2024.
+    </div>
+  </div>
+
+  <!-- 4. Relationship Depth -->
+  <div class="card">
+    <h2>Relationship Depth: Who Do You Actually Talk To?</h2>
+    <div class="chart-container">
+      <canvas id="relDepthChart"></canvas>
+    </div>
+    <div style="margin-top: 1rem; font-size: 0.82rem; color: var(--text-muted);">
+      Only <strong>4.2% (159)</strong> of your 3,811 connections have exchanged messages in the last 6 months. <strong>64.6% (2,462)</strong> have never messaged at all. This is typical for senior professionals, but it also means there's a large dormant network you could reactivate.
+    </div>
+  </div>
+
+  <!-- 5. Inbound vs Outbound Invitations -->
+  <div class="card">
+    <h2>Who's Reaching Out? (Last 6 Months)</h2>
+    <div style="display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap;">
+      <div style="flex: 1; min-width: 200px;">
+        <div class="chart-container" style="height: 220px;">
+          <canvas id="invDirectionDonut"></canvas>
+        </div>
+      </div>
+      <div style="flex: 1; min-width: 250px;">
+        <div style="margin-bottom: 1rem;">
+          <div style="font-size: 2.2rem; font-weight: 800; color: var(--teal-dark);">65%</div>
+          <div style="font-size: 0.85rem; color: var(--text-muted);">of invitations are <strong>outbound</strong> (you reaching out)</div>
+        </div>
+        <div style="margin-bottom: 0.75rem;">
+          <div style="font-size: 2.2rem; font-weight: 800; color: var(--coral);">35%</div>
+          <div style="font-size: 0.85rem; color: var(--text-muted);">are <strong>inbound</strong> (people finding you)</div>
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); padding-top: 0.5rem; border-top: 1px solid #eee;">
+          461 total invitations tracked (Sep 2025 - Feb 2026).<br>
+          300 outbound, 161 inbound.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Invitation Trend by Month -->
+  <div class="card card-full">
+    <h2>Invitation Activity by Month</h2>
+    <div class="chart-container">
+      <canvas id="invTrendChart"></canvas>
+    </div>
+    <div style="margin-top: 0.75rem; font-size: 0.82rem; color: var(--text-muted);">
+      <strong>Sep 2025 and Jan 2026</strong> were your most active outreach months (94 and 81 sent). Inbound requests stay remarkably steady at ~28-31/month, suggesting consistent organic discovery. Your outreach is bursty, driven by events and community engagement.
+    </div>
+  </div>
+
+  <!-- 8. Recent Connections Timeline -->
+  <div class="card card-full">
+    <h2>Recent Connections: Dec 2025 - Feb 2026 (168 New)</h2>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1rem;">
+      <div style="text-align: center; padding: 1rem; background: var(--teal-light); border-radius: 8px;">
+        <div style="font-size: 1.8rem; font-weight: 800; color: var(--teal-dark);">95</div>
+        <div style="font-size: 0.8rem; color: var(--text-muted);">You Initiated</div>
+      </div>
+      <div style="text-align: center; padding: 1rem; background: #fff5f0; border-radius: 8px;">
+        <div style="font-size: 1.8rem; font-weight: 800; color: var(--coral);">72</div>
+        <div style="font-size: 0.8rem; color: var(--text-muted);">They Initiated</div>
+      </div>
+      <div style="text-align: center; padding: 1rem; background: #fef3e0; border-radius: 8px;">
+        <div style="font-size: 1.8rem; font-weight: 800; color: #8a6b1e;">37</div>
+        <div style="font-size: 0.8rem; color: var(--text-muted);">Have Messaged Since</div>
+      </div>
+    </div>
+    <div style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1rem;">
+      Of 168 recent connections, only <strong>22% (37)</strong> have exchanged messages. The rest are "collected" connections. Your most engaged new relationships include connections at DraftKings (6 msgs), Dreamers & Doers (4 msgs), and several AI community contacts.
+    </div>
+    <div class="chart-container">
+      <canvas id="recentConnsChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Deep Analytics Insights -->
+  <div class="card card-full">
+    <h2>Deep Analytics Insights</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 1rem;">
+      <div class="insight-box">
+        <div class="insight-icon">&#x1F3AF;</div>
+        <div class="insight-content">
+          <h3>Your Audience Is Tech + Ops + Marketing</h3>
+          <p>Your top 3 network clusters are Technology/Software (14.4%), Independent/Founders (7.7%), and Marketing/Creative (7.3%). Combined with Consulting (6%) and Operations (4.8%), these groups represent your core professional community. Legal/LegalTech is only 3.1%, suggesting room to grow that segment deliberately for LawLab AI.</p>
+        </div>
+      </div>
+      <div class="insight-box" style="border-color: var(--coral); background: linear-gradient(135deg, #fff5f0, #fff);">
+        <div class="insight-icon">&#x1F4DD;</div>
+        <div class="insight-content">
+          <h3>Posting Drives Growth (r = 0.64)</h3>
+          <p>There's a strong correlation between your posting frequency and new connections. When you post 10+ times a month, connections spike to 60-97 new people. When you post 0-2 times, you get 7-15. Your content is a genuine growth engine.</p>
+        </div>
+      </div>
+      <div class="insight-box" style="border-color: var(--gold); background: linear-gradient(135deg, #fefaed, #fff);">
+        <div class="insight-icon">&#x1F4A4;</div>
+        <div class="insight-content">
+          <h3>2,462 Sleeping Connections</h3>
+          <p>64.6% of your network has never exchanged a single message with you. Another 26% are dormant (no messages in 2+ years). That's a massive untapped resource. Even reactivating 5% of dormant connections (50 people) through targeted outreach could open new consulting or workshop opportunities.</p>
+        </div>
+      </div>
+      <div class="insight-box" style="border-color: var(--rose); background: linear-gradient(135deg, #fef0ed, #fff);">
+        <div class="insight-icon">&#x1F4E5;</div>
+        <div class="insight-content">
+          <h3>You're a Proactive Networker</h3>
+          <p>65% of your recent invitations are outbound. You're not waiting for people to find you. But your inbound rate (35%) is healthy and consistent at ~30/month, suggesting your content and profile do generate organic interest. The bursty outreach pattern (94 in Sep, 10 in Feb) likely tracks to events and community activities.</p>
+        </div>
+      </div>
+      <div class="insight-box" style="border-color: var(--teal); background: linear-gradient(135deg, var(--teal-light), #fff);">
+        <div class="insight-icon">&#x1F91D;</div>
+        <div class="insight-content">
+          <h3>AI Community Is Your Fastest-Growing Segment</h3>
+          <p>6% of your total network (226 people) is explicitly AI/ML-related, but your company follows tell a different story: AI is 27% of what you actively follow. This is your growth edge. The AI segment of your network is younger and more engaged than your legacy tech/marketing connections.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== AUDIENCE CONCENTRATION ANALYSIS ========== -->
+  <div class="card card-full" style="background: linear-gradient(135deg, #0d5c5c, #1a7a7a); color: white; margin-top: 1rem;">
+    <h2 style="color: white; font-size: 1.2rem; letter-spacing: 1px;">Audience Concentration Analysis</h2>
+    <p style="opacity: 0.85; font-size: 0.9rem;">Who is in your network, what level are they, how engaged are they, and how is your audience shifting?</p>
+  </div>
+
+  <!-- Seniority Distribution -->
+  <div class="card">
+    <h2>Audience by Seniority Level</h2>
+    <div class="chart-container tall">
+      <canvas id="seniorityChart"></canvas>
+    </div>
+    <div style="margin-top: 0.75rem; padding: 0.75rem; background: var(--teal-light); border-radius: 8px; font-size: 0.85rem;">
+      <strong>Your network skews very senior.</strong> 25% are C-Suite/Owners, 23% are Directors/Heads, and 9% are Senior ICs. Only 5% are early career. This is a decision-maker heavy network, ideal for consulting and workshop sales.
+    </div>
+  </div>
+
+  <!-- Functional Role Distribution -->
+  <div class="card">
+    <h2>Audience by Functional Role</h2>
+    <div class="chart-container tall">
+      <canvas id="functionChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Engagement by Function -->
+  <div class="card card-full">
+    <h2>Which Segments Actually Engage With You?</h2>
+    <div class="chart-container tall">
+      <canvas id="engByFunctionChart"></canvas>
+    </div>
+    <div style="margin-top: 0.75rem; font-size: 0.82rem; color: var(--text-muted);">
+      <strong>Engagement rate</strong> = % of connections in that role who have ever exchanged messages with you.
+      <strong>Avg messages</strong> = average total messages exchanged per connection. High engagement + high avg msgs = your most relationship-rich segments.
+    </div>
+  </div>
+
+  <!-- Engagement by Seniority -->
+  <div class="card card-full">
+    <h2>Engagement by Seniority Level</h2>
+    <div class="chart-container">
+      <canvas id="engBySeniorityChart"></canvas>
+    </div>
+    <div style="margin-top: 0.75rem; padding: 0.75rem; background: #fff5f0; border-radius: 8px; font-size: 0.85rem;">
+      <strong>Founders are your most engaged segment (43%)</strong>, followed by Consultants (41%) and C-Suite (40%). Early Career connections barely engage (18%). VPs are surprisingly low (30%), possibly because they're the most time-constrained group.
+    </div>
+  </div>
+
+  <!-- Audience Shift Over Time -->
+  <div class="card card-full">
+    <h2>How Your Audience Composition Is Shifting</h2>
+    <div class="chart-container tall">
+      <canvas id="audienceShiftChart"></canvas>
+    </div>
+    <div style="margin-top: 0.75rem; padding: 0.75rem; background: var(--teal-light); border-radius: 8px; font-size: 0.85rem;">
+      <strong>Dramatic shifts since 2025:</strong> AI/Data jumped from 3% to 17.2% of new connections. Legal went from 1.3% to 10.7%. Founders grew from 6.2% to 12.2%. Meanwhile, Engineering dropped from 3.4% to 1%, and Product from 4.2% to 1.4%. Your network is actively reshaping around your new consulting identity.
+    </div>
+  </div>
+
+  <!-- Concentration Insights -->
+  <div class="card card-full">
+    <h2>Audience Concentration Insights</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 1rem;">
+
+      <div class="insight-box">
+        <div class="insight-icon">&#x1F451;</div>
+        <div class="insight-content">
+          <h3>You're Talking to Decision-Makers</h3>
+          <p>48% of your network is Director-level or above (C-Suite 25% + Director 23%). Another 4.7% are Founders. When you post on LinkedIn, roughly half your audience has budget authority. This is extremely high concentration of buying power for consulting and workshop services.</p>
+        </div>
+      </div>
+
+      <div class="insight-box" style="border-color: var(--coral); background: linear-gradient(135deg, #fff5f0, #fff);">
+        <div class="insight-icon">&#x1F4CA;</div>
+        <div class="insight-content">
+          <h3>Consulting & HR: Highest Engagement, Smallest Segments</h3>
+          <p>Consulting (49% engagement), HR (47%), Coach/Speaker (47%), and Legal (44%) are your most engaged segments. But Legal (3.3%) and Coach/Speaker (0.7%) are tiny. These high-engagement small groups are prime targets for deliberate growth. More legal connections = more LawLab AI pipeline.</p>
+        </div>
+      </div>
+
+      <div class="insight-box" style="border-color: var(--gold); background: linear-gradient(135deg, #fefaed, #fff);">
+        <div class="insight-icon">&#x1F680;</div>
+        <div class="insight-content">
+          <h3>AI Is 17% of New Connections But Only 6% of Total</h3>
+          <p>Your 2025+ connections are 17.2% AI/Data people, nearly 6x the historical rate (3%). At this pace, AI professionals will be 10%+ of your total network within a year. This is your fastest-growing segment and the one most aligned with your consulting focus. Speak to them directly.</p>
+        </div>
+      </div>
+
+      <div class="insight-box" style="border-color: var(--mint); background: linear-gradient(135deg, #eef8f0, #fff);">
+        <div class="insight-icon">&#x2696;&#xFE0F;</div>
+        <div class="insight-content">
+          <h3>Legal Grew 8x: From 1.3% to 10.7%</h3>
+          <p>The most dramatic audience shift. Legal/Compliance connections went from 1.3% of pre-2024 connections to 10.7% in 2025+. You now have 124 legal professionals in your network, 77 added recently. This segment also has 44% engagement rate and is your LawLab AI target market.</p>
+        </div>
+      </div>
+
+      <div class="insight-box" style="border-color: var(--rose); background: linear-gradient(135deg, #fef0ed, #fff);">
+        <div class="insight-icon">&#x1F4AC;</div>
+        <div class="insight-content">
+          <h3>Product People Are Your Deepest Relationships</h3>
+          <p>Product managers average 5.2 messages per connection, the highest of any segment. Operations (4.0) and Marketing (3.9) follow. These are your "inner circle" functions from the Akamai/Bixal era. They know your work intimately and are your strongest referral sources.</p>
+        </div>
+      </div>
+
+      <div class="insight-box" style="border-color: var(--teal); background: linear-gradient(135deg, var(--teal-light), #fff);">
+        <div class="insight-icon">&#x1F399;&#xFE0F;</div>
+        <div class="insight-content">
+          <h3>Three Audiences, Three Messages</h3>
+          <p><strong>1) AI/Legal newcomers (28% of recent connections):</strong> They found you through AI content. Speak to practical AI adoption, legal ops transformation, and the human side of AI change.<br>
+          <strong>2) Founders/Consultants (19% of recent):</strong> Fellow builders. Speak to systems thinking, client delivery, and building a practice.<br>
+          <strong>3) Legacy Ops/Marketing network (40% of total):</strong> Your Akamai/Bixal/Clarks era. These are your deepest relationships and strongest advocates. Reactivate them with relevant content about how AI is transforming their functions.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Education -->
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-year">2018 - 2020</div>
+        <div>
+          <div class="timeline-role">MBA</div>
+          <div class="timeline-company">MIT Sloan School of Management &mdash; Elected Sloan Senator</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2016 - 2020</div>
+        <div>
+          <div class="timeline-role">M.S.</div>
+          <div class="timeline-company">Brandeis University</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2003 - 2005</div>
+        <div>
+          <div class="timeline-role">M.A.</div>
+          <div class="timeline-company">Florida State University</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1995 - 1997</div>
+        <div>
+          <div class="timeline-role">B.A.</div>
+          <div class="timeline-company">Florida State University</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  Data exported February 23, 2026 &bull; Dashboard generated March 28, 2026
+</div>
+
+<script>
+// Brand colors
+const teal = '#1a7a7a';
+const tealDark = '#0d5c5c';
+const coral = '#d96b3f';
+const gold = '#d4b84f';
+const peach = '#f0a882';
+const rose = '#e8917e';
+const mint = '#b8e0d2';
+
+Chart.defaults.font.family = "'Segoe UI', system-ui, sans-serif";
+Chart.defaults.font.size = 12;
+
+// Network Growth Chart
+new Chart(document.getElementById('networkChart'), {
+  type: 'bar',
+  data: {
+    labels: ['07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26*'],
+    datasets: [{
+      label: 'New Connections',
+      data: [60,82,46,37,73,101,95,86,185,161,89,176,354,545,289,200,315,197,597,123],
+      backgroundColor: [
+        teal,teal,teal,teal,teal,teal,teal,teal,teal,teal,teal,teal,
+        coral,gold,teal,teal,coral,teal,coral,peach
+      ],
+      borderRadius: 4
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          title: ctx => '20' + ctx[0].label.replace('*',''),
+          afterLabel: ctx => {
+            const highlights = {
+              12: 'Clarks eCommerce era',
+              18: 'Started at Akamai',
+              19: 'MIT Sloan MBA',
+              20: 'MBA Graduation + COVID pivot',
+              23: 'Certification surge',
+              25: 'AI Consulting launch'
+            };
+            const yr = parseInt(ctx.label);
+            return highlights[yr] || '';
+          }
+        }
+      }
+    },
+    scales: {
+      y: { beginAtZero: true, grid: { color: '#f0f0f0' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// Engagement Chart
+new Chart(document.getElementById('engagementChart'), {
+  type: 'line',
+  data: {
+    labels: ['Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb'],
+    datasets: [
+      {
+        label: 'Reactions',
+        data: [277,288,240,708,627,502,517,439,474,324,475,302],
+        borderColor: teal,
+        backgroundColor: teal + '20',
+        fill: true,
+        tension: 0.3,
+        pointRadius: 4
+      },
+      {
+        label: 'Comments',
+        data: [31,47,44,232,164,136,101,87,91,81,89,54],
+        borderColor: coral,
+        backgroundColor: coral + '20',
+        fill: true,
+        tension: 0.3,
+        pointRadius: 4
+      },
+      {
+        label: 'Shares',
+        data: [3,4,2,21,19,10,10,7,4,5,5,4],
+        borderColor: gold,
+        backgroundColor: gold + '20',
+        fill: true,
+        tension: 0.3,
+        pointRadius: 4
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { usePointStyle: true, padding: 15 } }
+    },
+    scales: {
+      y: { beginAtZero: true, grid: { color: '#f0f0f0' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// Reaction Types Doughnut
+new Chart(document.getElementById('reactionChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Like','Appreciation','Empathy','Praise','Interest','Entertainment'],
+    datasets: [{
+      data: [8166,3266,3091,3025,1411,208],
+      backgroundColor: [teal, coral, gold, peach, mint, rose],
+      borderWidth: 2,
+      borderColor: '#fff'
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'right',
+        labels: { usePointStyle: true, padding: 10, font: { size: 11 } }
+      },
+      tooltip: {
+        callbacks: {
+          label: ctx => {
+            const total = ctx.dataset.data.reduce((a,b) => a+b, 0);
+            const pct = ((ctx.raw / total) * 100).toFixed(1);
+            return `${ctx.label}: ${ctx.raw.toLocaleString()} (${pct}%)`;
+          }
+        }
+      }
+    }
+  }
+});
+
+// Top Companies
+new Chart(document.getElementById('companiesChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Akamai','Bixal','MIT Sloan','Clarks','Arcadia','Biogen','Google','AWS','Amazon','FSU'],
+    datasets: [{
+      label: 'Connections',
+      data: [73,43,32,27,26,19,18,18,18,11],
+      backgroundColor: [coral, teal, gold, peach, mint, rose, teal, coral, gold, peach],
+      borderRadius: 4
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    indexAxis: 'y',
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { beginAtZero: true, grid: { color: '#f0f0f0' } },
+      y: { grid: { display: false } }
+    }
+  }
+});
+
+// Endorsements
+new Chart(document.getElementById('endorsementChart'), {
+  type: 'bar',
+  data: {
+    labels: ['E-commerce','Digital Marketing','Social Media Mktg','Strategy','Marketing','Social Media','Marketing Strategy','Integrated Marketing','Leadership','Email Marketing','Brand Management','Online Marketing','Public Relations','Digital Strategy','Analytics'],
+    datasets: [{
+      label: 'Endorsements',
+      data: [74,49,38,35,34,28,26,24,20,18,12,11,10,10,9],
+      backgroundColor: [
+        coral,teal,gold,peach,mint,rose,coral,teal,gold,peach,mint,rose,coral,teal,gold
+      ],
+      borderRadius: 4
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    indexAxis: 'y',
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { beginAtZero: true, grid: { color: '#f0f0f0' } },
+      y: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+
+// ========== DEEP ANALYTICS CHARTS ==========
+
+// 1. Network by Industry
+new Chart(document.getElementById('industryChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Technology/Software','Independent/Founders','Marketing/Creative','Consulting/Advisory','AI/ML','Pharma/Healthcare','Education/Academia','Operations/Strategy','Finance/VC','Legal/LegalTech','Big Tech (FAANG+)','Retail/Consumer','HR/People Ops','Design/UX','Energy/CleanTech'],
+    datasets: [{
+      label: 'Connections',
+      data: [549,293,279,228,226,210,188,183,140,118,89,77,74,70,59],
+      backgroundColor: [teal,coral,gold,peach,mint,rose,teal,coral,gold,peach,mint,rose,teal,coral,gold],
+      borderRadius: 4
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    indexAxis: 'y',
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          afterLabel: ctx => {
+            const pcts = [14.4,7.7,7.3,6.0,5.9,5.5,4.9,4.8,3.7,3.1,2.3,2.0,1.9,1.8,1.5];
+            return pcts[ctx.dataIndex] + '% of network';
+          }
+        }
+      }
+    },
+    scales: {
+      x: { beginAtZero: true, grid: { color: '#f0f0f0' } },
+      y: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+
+// 2. Company Follows by Theme
+new Chart(document.getElementById('followsThemeChart'), {
+  type: 'bar',
+  data: {
+    labels: ['AI / AI Tools','Technology / SaaS','Education / EdTech','Consulting / Strategy','Marketing / Creative','Women / DEI','Design / UX','Energy / Sustainability','HR / Careers','Finance / VC','Legal / LegalTech','Media / Publishing','Operations / Productivity','Gov / Nonprofit','Retail / Consumer','Health / Pharma','Behavior Science'],
+    datasets: [{
+      label: 'Companies',
+      data: [72,30,25,20,18,14,14,14,12,11,10,8,6,6,6,4,4],
+      backgroundColor: [teal,coral,gold,peach,mint,rose,teal,coral,gold,peach,mint,rose,teal,coral,gold,peach,mint],
+      borderRadius: 4
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    indexAxis: 'y',
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          afterLabel: ctx => {
+            const total = 274; // categorized follows
+            return ((ctx.raw / total) * 100).toFixed(1) + '% of categorized follows';
+          }
+        }
+      }
+    },
+    scales: {
+      x: { beginAtZero: true, grid: { color: '#f0f0f0' } },
+      y: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+
+// 3. Posts vs Connections Correlation
+const corrMonths = ['Jan 24','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan 25','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan 26','Feb'];
+const postData = [0,0,1,0,1,1,0,1,1,2,2,0,3,3,3,4,2,21,19,10,10,7,4,5,5,4];
+const connData = [29,42,22,19,15,10,13,9,10,12,7,9,16,24,13,61,30,77,63,36,97,61,74,45,93,30];
+
+new Chart(document.getElementById('correlationChart'), {
+  type: 'bar',
+  data: {
+    labels: corrMonths,
+    datasets: [
+      {
+        label: 'New Connections',
+        data: connData,
+        backgroundColor: teal + '80',
+        borderColor: teal,
+        borderWidth: 1,
+        borderRadius: 3,
+        yAxisID: 'y'
+      },
+      {
+        label: 'Posts Published',
+        data: postData,
+        type: 'line',
+        borderColor: coral,
+        backgroundColor: coral,
+        borderWidth: 3,
+        pointRadius: 4,
+        pointBackgroundColor: coral,
+        tension: 0.3,
+        yAxisID: 'y1'
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { usePointStyle: true, padding: 15 } }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        position: 'left',
+        title: { display: true, text: 'New Connections', font: { size: 11 } },
+        grid: { color: '#f0f0f0' }
+      },
+      y1: {
+        beginAtZero: true,
+        position: 'right',
+        title: { display: true, text: 'Posts', font: { size: 11 } },
+        grid: { display: false }
+      },
+      x: { grid: { display: false }, ticks: { font: { size: 9 }, maxRotation: 45 } }
+    }
+  }
+});
+
+// 4. Relationship Depth
+new Chart(document.getElementById('relDepthChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Never Messaged (64.6%)','Dormant 2+ yrs (25.9%)','Going Stale 1-2 yrs (1.9%)','Some Contact 6-12 mo (3.4%)','Active < 6 mo (4.2%)'],
+    datasets: [{
+      data: [2462, 988, 74, 128, 159],
+      backgroundColor: ['#e0e0e0', rose, peach, gold, teal],
+      borderWidth: 2,
+      borderColor: '#fff'
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: '55%',
+    plugins: {
+      legend: {
+        position: 'right',
+        labels: { usePointStyle: true, padding: 8, font: { size: 11 } }
+      },
+      tooltip: {
+        callbacks: {
+          label: ctx => `${ctx.label.split('(')[0].trim()}: ${ctx.raw.toLocaleString()} connections`
+        }
+      }
+    }
+  }
+});
+
+// 5. Invitation Direction Donut
+new Chart(document.getElementById('invDirectionDonut'), {
+  type: 'doughnut',
+  data: {
+    labels: ['You Reached Out', 'They Reached Out'],
+    datasets: [{
+      data: [300, 161],
+      backgroundColor: [teal, coral],
+      borderWidth: 3,
+      borderColor: '#fff'
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: '65%',
+    plugins: {
+      legend: { display: false }
+    }
+  }
+});
+
+// 6. Invitation Trend
+new Chart(document.getElementById('invTrendChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Sep 25','Oct','Nov','Dec','Jan 26','Feb'],
+    datasets: [
+      {
+        label: 'Outbound (You)',
+        data: [94,32,60,23,81,10],
+        backgroundColor: teal,
+        borderRadius: 4
+      },
+      {
+        label: 'Inbound (Them)',
+        data: [28,31,28,29,30,15],
+        backgroundColor: coral,
+        borderRadius: 4
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { usePointStyle: true, padding: 15 } }
+    },
+    scales: {
+      y: { beginAtZero: true, grid: { color: '#f0f0f0' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// 7. Recent Connections Breakdown
+new Chart(document.getElementById('recentConnsChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Dec 2025', 'Jan 2026', 'Feb 2026'],
+    datasets: [
+      {
+        label: 'You Initiated',
+        data: [25, 55, 15],
+        backgroundColor: teal,
+        borderRadius: 4
+      },
+      {
+        label: 'They Initiated',
+        data: [35, 23, 14],
+        backgroundColor: coral,
+        borderRadius: 4
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { usePointStyle: true, padding: 15 } }
+    },
+    scales: {
+      y: { stacked: true, beginAtZero: true, grid: { color: '#f0f0f0' } },
+      x: { stacked: true, grid: { display: false } }
+    }
+  }
+});
+
+// ========== AUDIENCE CONCENTRATION CHARTS ==========
+
+// Seniority Distribution
+new Chart(document.getElementById('seniorityChart'), {
+  type: 'bar',
+  data: {
+    labels: ['C-Suite / Owner','Director / Head','Senior IC / Lead','Manager','Early Career','Founder','Consultant / Advisor','VP Level','Academic / Educator'],
+    datasets: [{
+      label: 'Connections',
+      data: [947,870,354,304,179,178,157,109,73],
+      backgroundColor: [teal,coral,gold,peach,mint,rose,teal,coral,gold],
+      borderRadius: 4
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    indexAxis: 'y',
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          afterLabel: ctx => {
+            const pcts = [24.8,22.8,9.3,8.0,4.7,4.7,4.1,2.9,1.9];
+            return pcts[ctx.dataIndex] + '% of network';
+          }
+        }
+      }
+    },
+    scales: {
+      x: { beginAtZero: true, grid: { color: '#f0f0f0' } },
+      y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+    }
+  }
+});
+
+// Functional Role Distribution
+new Chart(document.getElementById('functionChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Marketing / Comms','Consulting / Strategy','Founder / Startup','AI / Data Science','Sales / BD','Operations','Finance','Product','Legal / Compliance','HR / People','Design / UX','Engineering','Education','Program Mgmt','Coach / Speaker'],
+    datasets: [{
+      label: 'Connections',
+      data: [363,303,289,221,188,177,139,137,124,117,112,110,100,67,27],
+      backgroundColor: [coral,teal,gold,mint,peach,rose,coral,teal,gold,mint,peach,rose,coral,teal,gold],
+      borderRadius: 4
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    indexAxis: 'y',
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          afterLabel: ctx => {
+            const pcts = [9.5,8.0,7.6,5.8,4.9,4.6,3.6,3.6,3.3,3.1,2.9,2.9,2.6,1.8,0.7];
+            return pcts[ctx.dataIndex] + '% of network';
+          }
+        }
+      }
+    },
+    scales: {
+      x: { beginAtZero: true, grid: { color: '#f0f0f0' } },
+      y: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+
+// Engagement by Function (dual axis: engagement rate + avg msgs)
+new Chart(document.getElementById('engByFunctionChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Consulting','HR / People','Coach/Speaker','Legal','Product','Founder','Design / UX','Operations','AI / Data','Marketing','Sales / BD','Program Mgmt','Engineering','Finance','Education'],
+    datasets: [
+      {
+        label: 'Engagement Rate %',
+        data: [49,47,47,44,42,40,36,34,34,33,31,30,28,31,26],
+        backgroundColor: teal,
+        borderRadius: 4,
+        yAxisID: 'y'
+      },
+      {
+        label: 'Avg Messages',
+        data: [3.0,2.8,2.6,1.6,5.2,2.9,3.1,4.0,2.1,3.9,1.6,3.8,2.1,2.6,0.7],
+        type: 'line',
+        borderColor: coral,
+        backgroundColor: coral,
+        borderWidth: 3,
+        pointRadius: 5,
+        pointBackgroundColor: coral,
+        tension: 0.3,
+        yAxisID: 'y1'
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { usePointStyle: true, padding: 15 } }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: 60,
+        position: 'left',
+        title: { display: true, text: 'Engagement Rate %', font: { size: 11 } },
+        grid: { color: '#f0f0f0' },
+        ticks: { callback: v => v + '%' }
+      },
+      y1: {
+        beginAtZero: true,
+        max: 6,
+        position: 'right',
+        title: { display: true, text: 'Avg Messages', font: { size: 11 } },
+        grid: { display: false }
+      },
+      x: { grid: { display: false }, ticks: { font: { size: 9 }, maxRotation: 45 } }
+    }
+  }
+});
+
+// Engagement by Seniority
+new Chart(document.getElementById('engBySeniorityChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Founder','Consultant','C-Suite','Director','Mid-Level','Manager','Senior IC','VP','Academic','Early Career'],
+    datasets: [
+      {
+        label: 'Engagement Rate %',
+        data: [43,41,40,38,35,34,31,30,25,18],
+        backgroundColor: [teal,teal,teal,teal,gold,gold,gold,peach,peach,rose],
+        borderRadius: 4
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          afterLabel: ctx => {
+            const counts = [181,147,946,870,603,306,351,104,52,182];
+            const avgMsgs = [2.4,2.5,2.5,3.2,2.0,2.6,3.7,3.4,0.8,0.5];
+            return `${counts[ctx.dataIndex]} connections | Avg ${avgMsgs[ctx.dataIndex]} msgs`;
+          }
+        }
+      }
+    },
+    scales: {
+      y: { beginAtZero: true, max: 50, grid: { color: '#f0f0f0' }, ticks: { callback: v => v + '%' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// Audience Composition Shift
+new Chart(document.getElementById('audienceShiftChart'), {
+  type: 'bar',
+  data: {
+    labels: ['AI / Data','Founder','Legal','Marketing','Consulting','Sales / BD','Operations','Design / UX','Education','Coach/Speaker','HR','Finance','Product','Engineering','Program Mgmt'],
+    datasets: [
+      {
+        label: 'Pre-2024 %',
+        data: [3.0,6.2,1.3,9.4,7.4,5.0,4.6,2.9,2.4,0.6,3.0,3.8,4.2,3.4,1.8],
+        backgroundColor: peach + '90',
+        borderRadius: 3
+      },
+      {
+        label: '2025+ %',
+        data: [17.2,12.2,10.7,9.4,7.1,3.3,2.8,2.8,2.8,2.1,2.1,1.5,1.4,1.0,0.7],
+        backgroundColor: teal,
+        borderRadius: 3
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { usePointStyle: true, padding: 15 } },
+      tooltip: {
+        callbacks: {
+          afterBody: ctx => {
+            const preRaw = [88,180,38,271,215,144,133,83,69,17,88,109,121,99,53];
+            const postRaw = [124,88,77,68,51,24,20,20,20,15,15,11,10,7,5];
+            const idx = ctx[0].dataIndex;
+            return `Pre-2024: ${preRaw[idx]} people | 2025+: ${postRaw[idx]} people`;
+          }
+        }
+      }
+    },
+    scales: {
+      y: { beginAtZero: true, grid: { color: '#f0f0f0' }, ticks: { callback: v => v + '%' } },
+      x: { grid: { display: false }, ticks: { font: { size: 9 }, maxRotation: 45 } }
+    }
+  }
+});
+
+</script>
+</body>
+</html>
