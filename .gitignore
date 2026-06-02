@@ -1,0 +1,5 @@
+# Local analysis artifacts (embed local file paths; not for the public repo)
+analyze.py
+analysis_output.json
+__pycache__/
+SESSION.md
