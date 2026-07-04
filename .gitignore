@@ -3,3 +3,4 @@ analyze.py
 analysis_output.json
 __pycache__/
 SESSION.md
+make_playbook_docx.py
