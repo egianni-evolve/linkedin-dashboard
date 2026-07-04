@@ -109,7 +109,8 @@
     margin: 0 auto;
     padding: 0 1rem 3rem;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    /* minmax(0,1fr) so a mid-render Chart.js canvas can't stretch the columns */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.25rem;
   }
 
@@ -352,27 +353,27 @@
 
 <div class="kpi-strip">
   <div class="kpi">
-    <div class="kpi-value">3,811</div>
+    <div class="kpi-value">3,998</div>
     <div class="kpi-label">Connections</div>
   </div>
   <div class="kpi">
-    <div class="kpi-value">19,200</div>
+    <div class="kpi-value">21,189</div>
     <div class="kpi-label">Reactions Given</div>
   </div>
   <div class="kpi">
-    <div class="kpi-value">2,962</div>
+    <div class="kpi-value">3,248</div>
     <div class="kpi-label">Comments Made</div>
   </div>
   <div class="kpi">
-    <div class="kpi-value">35</div>
+    <div class="kpi-value">40</div>
     <div class="kpi-label">Certifications</div>
   </div>
   <div class="kpi">
-    <div class="kpi-value">1,131</div>
+    <div class="kpi-value">1,203</div>
     <div class="kpi-label">People Followed</div>
   </div>
   <div class="kpi">
-    <div class="kpi-value">798</div>
+    <div class="kpi-value">898</div>
     <div class="kpi-label">Companies Followed</div>
   </div>
 </div>
@@ -389,7 +390,7 @@
 
   <!-- Engagement Activity -->
   <div class="card">
-    <h2>Monthly Engagement (Mar 2025 - Feb 2026)</h2>
+    <h2>Monthly Engagement (Jul 2025 - Jun 2026)</h2>
     <div class="chart-container">
       <canvas id="engagementChart"></canvas>
     </div>
@@ -421,7 +422,7 @@
 
   <!-- Certifications Timeline -->
   <div class="card">
-    <h2>Certification Journey (35 Credentials)</h2>
+    <h2>Certification Journey (40 Credentials)</h2>
     <div class="cert-year-group">
       <div class="cert-year-label">2012-2015</div>
       <div class="cert-list">
@@ -471,6 +472,10 @@
         <span class="cert-item">Certified AI Educator</span>
         <span class="cert-item">Prompt Engineering (Vanderbilt x3)</span>
         <span class="cert-item">Managing AI Risks</span>
+        <span class="cert-item">AI Agent Mastermind</span>
+        <span class="cert-item">AI for Legal Basics</span>
+        <span class="cert-item">AI Analysis for Legal Workflows</span>
+        <span class="cert-item">AI Governance in Practice</span>
       </div>
     </div>
   </div>
@@ -526,28 +531,28 @@
 
   <!-- Skills -->
   <div class="card">
-    <h2>Skills on Profile (76 Skills)</h2>
+    <h2>Skills on Profile (38 Skills)</h2>
     <div class="skills-grid">
       <span class="skill-tag">AI Operations</span>
-      <span class="skill-tag">Strategy</span>
-      <span class="skill-tag">Artificial Intelligence</span>
-      <span class="skill-tag">AI Education</span>
-      <span class="skill-tag">Legal Operations</span>
-      <span class="skill-tag">Digital Strategy</span>
       <span class="skill-tag">Behavior Design</span>
-      <span class="skill-tag">Operations Management</span>
+      <span class="skill-tag">Strategy</span>
+      <span class="skill-tag">Artificial Intelligence (AI)</span>
+      <span class="skill-tag">AI Education</span>
+      <span class="skill-tag">Agentic AI</span>
+      <span class="skill-tag">Generative AI</span>
+      <span class="skill-tag">Prompt Engineering</span>
+      <span class="skill-tag">Customer Experience</span>
       <span class="skill-tag">E-commerce</span>
-      <span class="skill-tag">Digital Marketing</span>
-      <span class="skill-tag">UX Strategy</span>
-      <span class="skill-tag">Process Optimization</span>
-      <span class="skill-tag">Cross-functional Leadership</span>
-      <span class="skill-tag">Product Management</span>
-      <span class="skill-tag">Marketing Strategy</span>
+      <span class="skill-tag">Digital Strategy</span>
       <span class="skill-tag">Change Management</span>
-      <span class="skill-tag">Business Analytics</span>
-      <span class="skill-tag">Strategic Planning</span>
-      <span class="skill-tag">Program Management</span>
-      <span class="skill-tag">Digital Transformation</span>
+      <span class="skill-tag">Workflow Design</span>
+      <span class="skill-tag">User-centered Design</span>
+      <span class="skill-tag">Habit Design</span>
+      <span class="skill-tag">Business Operations</span>
+      <span class="skill-tag">Operations Management</span>
+      <span class="skill-tag">Leadership</span>
+      <span class="skill-tag">Marketing Strategy</span>
+      <span class="skill-tag">Digital Marketing</span>
     </div>
   </div>
 
@@ -560,7 +565,7 @@
         <div class="insight-icon">&#x1F4C8;</div>
         <div class="insight-content">
           <h3>2025 Was Your Biggest Networking Year Ever</h3>
-          <p>597 new connections in 2025 alone, surpassing even 2020 (545, your MIT graduation year). Your pivot to AI consulting is driving serious network expansion.</p>
+          <p>596 new connections in 2025, surpassing even 2020 (544, your MIT graduation year). And 2026 is on pace to beat it: 315 new connections by July 3. Your pivot to AI consulting is driving serious network expansion.</p>
         </div>
       </div>
 
@@ -575,8 +580,8 @@
       <div class="insight-box" style="border-color: var(--gold); background: linear-gradient(135deg, #fefaed, #fff);">
         <div class="insight-icon">&#x1F393;</div>
         <div class="insight-content">
-          <h3>31 Certifications in 2023-2026</h3>
-          <p>You earned 31 of your 35 certifications in the last 3 years. Clear trajectory: digital marketing to design thinking to AI. MIT COO Program + BJ Fogg Behavior Design + Anthropic AI Fluency = your unique trifecta.</p>
+          <h3>36 Certifications in 2023-2026</h3>
+          <p>You earned 36 of your 40 certifications in the last 3 years. Clear trajectory: digital marketing to design thinking to AI. MIT COO Program + BJ Fogg Behavior Design + Anthropic AI Fluency = your unique trifecta.</p>
         </div>
       </div>
 
@@ -584,7 +589,7 @@
         <div class="insight-icon">&#x1F49C;</div>
         <div class="insight-content">
           <h3>You Lead with Appreciation</h3>
-          <p>42% of your reactions are LIKE, but 33% are APPRECIATION + PRAISE combined. You actively uplift others' work, not just passively consuming content. That is a distinctive engagement signature.</p>
+          <p>40% of your reactions are LIKE, but 34% are APPRECIATION + PRAISE combined. You actively uplift others' work, not just passively consuming content. That is a distinctive engagement signature.</p>
         </div>
       </div>
 
@@ -592,7 +597,7 @@
         <div class="insight-icon">&#x1F3E2;</div>
         <div class="insight-content">
           <h3>Akamai Is Your Network Stronghold</h3>
-          <p>77 connections from Akamai alone, with 15 glowing recommendations from that era. Your digital transformation work there built a deep network of advocates who now hold senior roles at Google, Apple, HubSpot, Salesforce, and DraftKings.</p>
+          <p>74 connections from Akamai alone, with 15 glowing recommendations from that era. Your digital transformation work there built a deep network of advocates who now hold senior roles at Google, Apple, HubSpot, Salesforce, and DraftKings.</p>
         </div>
       </div>
 
@@ -600,7 +605,7 @@
         <div class="insight-icon">&#x1F30D;</div>
         <div class="insight-content">
           <h3>Your Recommendations Tell a Story</h3>
-          <p>32 detailed recommendations spanning 18 years. Recurring themes: "connector," "tireless," "user-centered," "systems thinker," "genuine." People consistently describe someone who builds bridges between teams and leads with both intellect and heart.</p>
+          <p>36 detailed recommendations spanning 18 years. Recurring themes: "connector," "tireless," "user-centered," "systems thinker," "genuine." People consistently describe someone who builds bridges between teams and leads with both intellect and heart.</p>
         </div>
       </div>
 
@@ -609,7 +614,7 @@
 
   <!-- Recommendations Highlights -->
   <div class="card card-full">
-    <h2>Recommendation Highlights (32 Total)</h2>
+    <h2>Recommendation Highlights (36 Total)</h2>
     <div class="rec-grid">
       <div class="rec-card">
         <div class="rec-quote">"Erika has the rare ability to both think and lead the high level strategic direction as well as contribute in a hands on manner for tactical execution... Her experience in UX, Product Design, eCommerce technology and systems are key attributes."</div>
@@ -675,7 +680,7 @@
 
   <!-- 1. Network Composition by Industry -->
   <div class="card">
-    <h2>Your Network by Industry (3,811 Connections)</h2>
+    <h2>Your Network by Industry (3,998 Connections)</h2>
     <div class="chart-container tall">
       <canvas id="industryChart"></canvas>
     </div>
@@ -683,7 +688,7 @@
 
   <!-- 2. Company Follows by Theme -->
   <div class="card">
-    <h2>Companies You Follow by Theme (798 Companies)</h2>
+    <h2>Companies You Follow by Theme (898 Companies)</h2>
     <div class="chart-container tall">
       <canvas id="followsThemeChart"></canvas>
     </div>
@@ -691,12 +696,12 @@
 
   <!-- 3. Posts vs Connections Correlation -->
   <div class="card card-full">
-    <h2>Does Posting Drive Connections? (r = 0.64, Strong Positive)</h2>
+    <h2>Does Posting Drive Connections? (r = 0.61, Strong Positive)</h2>
     <div class="chart-container tall">
       <canvas id="correlationChart"></canvas>
     </div>
     <div style="margin-top: 0.75rem; padding: 1rem; background: var(--teal-light); border-radius: 8px; font-size: 0.85rem;">
-      <strong>Correlation coefficient: r = 0.64</strong> (strong positive). Months where you posted more saw meaningfully more new connections. June 2025 was the inflection point: 21 posts drove 77 new connections, compared to near-zero posting and ~10-15 connections/month in early 2024.
+      <strong>Correlation coefficient: r = 0.61</strong> (strong positive). Months where you posted more saw meaningfully more new connections. June 2025 was the inflection point: 21 posts drove 76 new connections, compared to near-zero posting and ~10-15 connections/month in early 2024. Notably, spring 2026 held at 46-52 new connections/month even as posting slowed, suggesting the network now grows partly on momentum and organic discovery.
     </div>
   </div>
 
@@ -707,7 +712,7 @@
       <canvas id="relDepthChart"></canvas>
     </div>
     <div style="margin-top: 1rem; font-size: 0.82rem; color: var(--text-muted);">
-      Only <strong>4.2% (161)</strong> of your 3,811 connections have exchanged messages in the last 6 months. <strong>64.6% (2,461)</strong> have never messaged at all. This is typical for senior professionals, but it also means there's a large dormant network you could reactivate.
+      Only <strong>3.2% (128)</strong> of your 3,998 connections have exchanged messages in the last 6 months. <strong>64.8% (2,589)</strong> have never messaged at all. This is typical for senior professionals, but it also means there's a large dormant network you could reactivate.
     </div>
   </div>
 
@@ -722,16 +727,16 @@
       </div>
       <div style="flex: 1; min-width: 250px;">
         <div style="margin-bottom: 1rem;">
-          <div style="font-size: 2.2rem; font-weight: 800; color: var(--teal-dark);">65%</div>
+          <div style="font-size: 2.2rem; font-weight: 800; color: var(--teal-dark);">42%</div>
           <div style="font-size: 0.85rem; color: var(--text-muted);">of invitations are <strong>outbound</strong> (you reaching out)</div>
         </div>
         <div style="margin-bottom: 0.75rem;">
-          <div style="font-size: 2.2rem; font-weight: 800; color: var(--coral);">35%</div>
+          <div style="font-size: 2.2rem; font-weight: 800; color: var(--coral);">58%</div>
           <div style="font-size: 0.85rem; color: var(--text-muted);">are <strong>inbound</strong> (people finding you)</div>
         </div>
         <div style="font-size: 0.8rem; color: var(--text-muted); padding-top: 0.5rem; border-top: 1px solid #eee;">
-          461 total invitations tracked (Sep 2025 - Feb 2026).<br>
-          300 outbound, 161 inbound.
+          324 invitations tracked (Jan - Jun 2026).<br>
+          135 outbound, 189 inbound.
         </div>
       </div>
     </div>
@@ -744,29 +749,29 @@
       <canvas id="invTrendChart"></canvas>
     </div>
     <div style="margin-top: 0.75rem; font-size: 0.82rem; color: var(--text-muted);">
-      <strong>Sep 2025 and Jan 2026</strong> were your most active outreach months (94 and 81 sent). Inbound requests stay remarkably steady at ~28-31/month, suggesting consistent organic discovery. Your outreach is bursty, driven by events and community engagement.
+      <strong>January 2026</strong> was your most active outreach month (63 sent); since February, outreach has settled to 12-17/month. Inbound requests climbed through spring (41 in April and June) and have outpaced your outbound every month since February. Organic discovery is now the primary driver of network growth.
     </div>
   </div>
 
   <!-- 8. Recent Connections Timeline -->
   <div class="card card-full">
-    <h2>Recent Connections: Dec 2025 - Feb 2026 (168 New)</h2>
+    <h2>Recent Connections: Apr - Jun 2026 (148 New)</h2>
     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1rem;">
       <div style="text-align: center; padding: 1rem; background: var(--teal-light); border-radius: 8px;">
-        <div style="font-size: 1.8rem; font-weight: 800; color: var(--teal-dark);">95</div>
+        <div style="font-size: 1.8rem; font-weight: 800; color: var(--teal-dark);">38</div>
         <div style="font-size: 0.8rem; color: var(--text-muted);">You Initiated</div>
       </div>
       <div style="text-align: center; padding: 1rem; background: #fff5f0; border-radius: 8px;">
-        <div style="font-size: 1.8rem; font-weight: 800; color: var(--coral);">72</div>
+        <div style="font-size: 1.8rem; font-weight: 800; color: var(--coral);">108</div>
         <div style="font-size: 0.8rem; color: var(--text-muted);">They Initiated</div>
       </div>
       <div style="text-align: center; padding: 1rem; background: #fef3e0; border-radius: 8px;">
-        <div style="font-size: 1.8rem; font-weight: 800; color: #8a6b1e;">37</div>
+        <div style="font-size: 1.8rem; font-weight: 800; color: #8a6b1e;">45</div>
         <div style="font-size: 0.8rem; color: var(--text-muted);">Have Messaged Since</div>
       </div>
     </div>
     <div style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1rem;">
-      Of 168 recent connections, only <strong>22% (37)</strong> have exchanged messages. The rest are "collected" connections. Your most engaged new relationships include connections at DraftKings (6 msgs), Dreamers & Doers (4 msgs), and several AI community contacts.
+      Of 148 recent connections, <strong>30% (45)</strong> have already exchanged messages, up from 22% in the winter quarter. And nearly three in four of them reached out to you first (108 of 148), a complete reversal from the winter, when you initiated most connections.
     </div>
     <div class="chart-container">
       <canvas id="recentConnsChart"></canvas>
@@ -781,35 +786,35 @@
         <div class="insight-icon">&#x1F3AF;</div>
         <div class="insight-content">
           <h3>Your Audience Is Consulting + Marketing + Tech</h3>
-          <p>Your top 3 network clusters are Consulting/Advisory (11.2%), Marketing/Creative (9.0%), and Technology/Software (7.4%). Add Independent/Founders (7.3%) and AI/ML (5.5%) and you have your core professional community. Legal/LegalTech is only 3.0%, confirming room to grow that segment deliberately for LawLab AI.</p>
+          <p>Your top 3 network clusters are Consulting/Advisory (11.2%), Marketing/Creative (8.3%), and Independent/Founders (8.0%). Add Technology/Software (7.7%) and AI/ML (6.6%) and you have your core professional community. Legal/LegalTech is only 3.1%, confirming room to grow that segment deliberately for LawLab AI.</p>
         </div>
       </div>
       <div class="insight-box" style="border-color: var(--coral); background: linear-gradient(135deg, #fff5f0, #fff);">
         <div class="insight-icon">&#x1F4DD;</div>
         <div class="insight-content">
-          <h3>Posting Drives Growth (r = 0.64)</h3>
-          <p>There's a strong correlation between your posting frequency and new connections. When you post 10+ times a month, connections spike to 60-97 new people. When you post 0-2 times, you get 7-15. Your content is a genuine growth engine.</p>
+          <h3>Posting Drives Growth (r = 0.61)</h3>
+          <p>There's a strong correlation between your posting frequency and new connections. When you post 10+ times a month, connections spike to 60-97 new people; near-zero posting in 2024 brought 7-15. The new wrinkle: spring 2026 held at 46-52 new connections/month despite minimal posting. Your content built a growth engine that now runs partly on its own.</p>
         </div>
       </div>
       <div class="insight-box" style="border-color: var(--gold); background: linear-gradient(135deg, #fefaed, #fff);">
         <div class="insight-icon">&#x1F4A4;</div>
         <div class="insight-content">
-          <h3>2,461 Sleeping Connections</h3>
-          <p>64.6% of your network has never exchanged a single message with you. Another 26% are dormant (no messages in 2+ years). That's a massive untapped resource. Even reactivating 5% of dormant connections (50 people) through targeted outreach could open new consulting or workshop opportunities.</p>
+          <h3>2,589 Sleeping Connections</h3>
+          <p>64.8% of your network has never exchanged a single message with you. Another 25% are dormant (no messages in 2+ years). That's a massive untapped resource. Even reactivating 5% of dormant connections (50 people) through targeted outreach could open new consulting or workshop opportunities.</p>
         </div>
       </div>
       <div class="insight-box" style="border-color: var(--rose); background: linear-gradient(135deg, #fef0ed, #fff);">
         <div class="insight-icon">&#x1F4E5;</div>
         <div class="insight-content">
-          <h3>You're a Proactive Networker</h3>
-          <p>65% of your recent invitations are outbound. You're not waiting for people to find you. But your inbound rate (35%) is healthy and consistent at ~30/month, suggesting your content and profile do generate organic interest. The bursty outreach pattern (94 in Sep, 10 in Feb) likely tracks to events and community activities.</p>
+          <h3>The Balance Flipped: They Find You Now</h3>
+          <p>58% of your invitations over the last six months were inbound (189 vs. 135), a reversal from the winter, when 65% were outbound. Inbound requests climbed to ~40/month by late spring while your outreach settled to 12-17/month. Your content and profile now generate more connection demand than your outreach does.</p>
         </div>
       </div>
       <div class="insight-box" style="border-color: var(--teal); background: linear-gradient(135deg, var(--teal-light), #fff);">
         <div class="insight-icon">&#x1F91D;</div>
         <div class="insight-content">
           <h3>AI Community Is Your Fastest-Growing Segment</h3>
-          <p>5.5% of your total network (209 people) is explicitly AI/ML-related, but your company follows tell a different story: AI is 27% of what you actively follow. This is your growth edge. The AI segment of your network is younger and more engaged than your legacy tech/marketing connections.</p>
+          <p>6.6% of your total network (264 people) is explicitly AI/ML-related, but your company follows tell a different story: AI is 27% of what you actively follow. This is your growth edge. The AI segment of your network is younger and more engaged than your legacy tech/marketing connections.</p>
         </div>
       </div>
     </div>
@@ -828,7 +833,7 @@
       <canvas id="seniorityChart"></canvas>
     </div>
     <div style="margin-top: 0.75rem; padding: 0.75rem; background: var(--teal-light); border-radius: 8px; font-size: 0.85rem;">
-      <strong>Your network skews very senior.</strong> 40% hold a formal Director, VP, or C-suite title, and 51% are decision-makers once founders are added in. Only 3.4% are early career. This is a decision-maker heavy network, ideal for consulting and workshop sales.
+      <strong>Your network skews very senior.</strong> 39% hold a formal Director, VP, or C-suite title, and 52% are decision-makers once founders are added in. Only 3.3% are early career. This is a decision-maker heavy network, ideal for consulting and workshop sales.
     </div>
   </div>
 
@@ -859,7 +864,7 @@
       <canvas id="engBySeniorityChart"></canvas>
     </div>
     <div style="margin-top: 0.75rem; padding: 0.75rem; background: #fff5f0; border-radius: 8px; font-size: 0.85rem;">
-      <strong>C-Suite are your most engaged segment (44%)</strong>, followed by Consultants (43%) and Founders (42%). Early Career connections barely engage (18%). VPs sit mid-pack (33%), possibly because they're the most time-constrained group.
+      <strong>C-Suite are your most engaged segment (42%)</strong>, followed by Consultants (41%) and Founders (40%). Early Career connections barely engage (21%). VPs sit mid-pack (36%), possibly because they're the most time-constrained group.
     </div>
   </div>
 
@@ -870,7 +875,7 @@
       <canvas id="audienceShiftChart"></canvas>
     </div>
     <div style="margin-top: 0.75rem; padding: 0.75rem; background: var(--teal-light); border-radius: 8px; font-size: 0.85rem;">
-      <strong>Dramatic shifts since 2025</strong> (share of classifiable connections): Founders surged from 14.6% to 28.2% of new connections. AI/Data jumped from 4.0% to 14.2%. Legal grew from 2.0% to 13.2%. Meanwhile, Engineering dropped from 6.1% to 1.6%, and Product from 4.0% to 1.2%. Your network is actively reshaping around your new consulting identity.
+      <strong>Dramatic shifts since 2025</strong> (share of classifiable connections): Founders surged from 15.8% to 29.4% of new connections. AI/Data jumped from 4.2% to 15.5%. Legal grew from 2.1% to 11.3%. Meanwhile, Engineering dropped from 6.4% to 2.6%, and Product from 3.9% to 1.1%. Your network is actively reshaping around your new consulting identity.
     </div>
   </div>
 
@@ -883,7 +888,7 @@
         <div class="insight-icon">&#x1F451;</div>
         <div class="insight-content">
           <h3>You're Talking to Decision-Makers</h3>
-          <p>40% of your network holds a formal Director, VP, or C-suite title. Add the 11% who are founders and 51% are decision-makers. When you post on LinkedIn, roughly half your audience has budget authority. This is extremely high concentration of buying power for consulting and workshop services.</p>
+          <p>39% of your network holds a formal Director, VP, or C-suite title. Add the 13% who are founders and 52% are decision-makers. When you post on LinkedIn, roughly half your audience has budget authority. This is extremely high concentration of buying power for consulting and workshop services.</p>
         </div>
       </div>
 
@@ -891,23 +896,23 @@
         <div class="insight-icon">&#x1F4CA;</div>
         <div class="insight-content">
           <h3>HR & Legal: Highest Engagement, Smallest Segments</h3>
-          <p>HR/People (49% engagement), Legal (45%), Finance (44%), and Consulting (43%) are your most engaged segments. But Legal (2.9% of network) and Coach/Speaker (1.3%) are tiny. These high-engagement small groups are prime targets for deliberate growth. More legal connections = more LawLab AI pipeline.</p>
+          <p>HR/People (51% engagement), Consulting (44%), Coach/Speaker (43%), Legal (42%), and Finance (42%) are your most engaged segments. But Legal (2.9% of network) and Coach/Speaker (1.4%) are tiny. These high-engagement small groups are prime targets for deliberate growth. More legal connections = more LawLab AI pipeline.</p>
         </div>
       </div>
 
       <div class="insight-box" style="border-color: var(--gold); background: linear-gradient(135deg, #fefaed, #fff);">
         <div class="insight-icon">&#x1F680;</div>
         <div class="insight-content">
-          <h3>AI Is 14% of New Connections But Only 5.5% of Total</h3>
-          <p>Your 2025+ connections are 14.2% AI/Data people, roughly 3.5x the historical rate (4%). At this pace, AI professionals will be 10%+ of your total network within a year. This is one of your fastest-growing segments and the one most aligned with your consulting focus. Speak to them directly.</p>
+          <h3>AI Is 15% of New Connections But Only 6.6% of Total</h3>
+          <p>Your 2025+ connections are 15.5% AI/Data people, roughly 3.7x the historical rate (4.2%). At this pace, AI professionals will be 10%+ of your total network within a year. This is one of your fastest-growing segments and the one most aligned with your consulting focus. Speak to them directly.</p>
         </div>
       </div>
 
       <div class="insight-box" style="border-color: var(--mint); background: linear-gradient(135deg, #eef8f0, #fff);">
         <div class="insight-icon">&#x2696;&#xFE0F;</div>
         <div class="insight-content">
-          <h3>Legal Grew ~6.6x: From 2.0% to 13.2%</h3>
-          <p>The most dramatic single-segment shift. Legal/Compliance connections went from 2.0% of pre-2024 classifiable connections to 13.2% in 2025+. You now have 111 legal professionals in your network, 68 added since 2025. This segment also has a 45% engagement rate and is your LawLab AI target market.</p>
+          <h3>Legal Grew ~5.4x: From 2.1% to 11.3%</h3>
+          <p>The most dramatic single-segment shift. Legal/Compliance connections went from 2.1% of pre-2024 classifiable connections to 11.3% in 2025+. You now have 117 legal professionals in your network, 73 added since 2025. This segment also has a 42% engagement rate and is your LawLab AI target market.</p>
         </div>
       </div>
 
@@ -915,7 +920,7 @@
         <div class="insight-icon">&#x1F4AC;</div>
         <div class="insight-content">
           <h3>Product People Are Your Deepest Relationships</h3>
-          <p>Product managers average 5.7 messages per connection, the highest of any substantial segment. Operations (4.6), Design/UX (4.3), and Marketing (4.2) follow. These are your "inner circle" functions from the Akamai/Bixal era. They know your work intimately and are your strongest referral sources.</p>
+          <p>Product managers average 5.2 messages per connection, the highest of any substantial segment (program management contacts average 8.0, but there are only 63 of them). Marketing and HR (4.3 each) and Design/UX (3.9) follow. These are your "inner circle" functions from the Akamai/Bixal era. They know your work intimately and are your strongest referral sources.</p>
         </div>
       </div>
 
@@ -936,8 +941,8 @@
   <div class="card card-full" style="border-left: 4px solid var(--gold);">
     <h2>About These Numbers</h2>
     <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
-      Every metric is derived directly from Erika's Complete LinkedIn Data Export (February 23, 2026). The dashboard was first built with Claude Opus 4.6 in March 2026, then independently re-derived and corrected with Claude Opus 4.8 on June 2, 2026.
-      <strong>Counts</strong> (connections, reactions, comments, certifications, invitations, messages, the posting correlation of r = 0.64) are exact and reproducible.
+      Every metric is derived directly from Erika's Complete LinkedIn Data Export (July 3, 2026). The dashboard was first built with Claude Opus 4.6 in March 2026, independently re-derived and corrected with Claude Opus 4.8 on June 2, 2026, and refreshed with the July 2026 export by Claude Fable 5 on July 4, 2026.
+      <strong>Counts</strong> (connections, reactions, comments, certifications, invitations, messages, the posting correlation of r = 0.61) are exact and reproducible.
       <strong>Audience composition</strong> (industry, function, seniority, and the pre-2024 vs 2025+ shift) is classified from job titles using a documented keyword ruleset, so those figures are directional rather than exact. About 40% of titles (for example "CEO" or "Director") carry a seniority but no single clear function, so audience-shift percentages are reported as a share of classifiable connections. The strategic read held across both reviews: a senior, decision-maker-heavy network reshaping around AI, Legal, and fellow founders.
     </p>
   </div>
@@ -978,7 +983,7 @@
 </div>
 
 <div class="footer">
-  Data exported February 23, 2026 &bull; Dashboard generated March 28, 2026 &bull; Re-reviewed and corrected with Claude Opus 4.8 on June 2, 2026
+  Data exported July 3, 2026 &bull; Dashboard generated March 28, 2026 &bull; Re-reviewed with Claude Opus 4.8 on June 2, 2026 &bull; Data refreshed with Claude Fable 5 on July 4, 2026
 </div>
 
 <script>
@@ -1001,7 +1006,7 @@ new Chart(document.getElementById('networkChart'), {
     labels: ['07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26*'],
     datasets: [{
       label: 'New Connections',
-      data: [60,82,46,37,73,101,95,86,185,161,89,176,354,545,289,200,315,197,597,123],
+      data: [60,82,46,37,73,101,95,86,185,161,89,176,354,544,288,200,314,196,596,315],
       backgroundColor: [
         teal,teal,teal,teal,teal,teal,teal,teal,teal,teal,teal,teal,
         coral,gold,teal,teal,coral,teal,coral,peach
@@ -1043,11 +1048,11 @@ new Chart(document.getElementById('networkChart'), {
 new Chart(document.getElementById('engagementChart'), {
   type: 'line',
   data: {
-    labels: ['Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb'],
+    labels: ['Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun'],
     datasets: [
       {
         label: 'Reactions',
-        data: [277,288,240,708,627,502,517,439,474,324,475,302],
+        data: [627,501,517,438,474,324,473,446,452,464,457,465],
         borderColor: teal,
         backgroundColor: teal + '20',
         fill: true,
@@ -1056,7 +1061,7 @@ new Chart(document.getElementById('engagementChart'), {
       },
       {
         label: 'Comments',
-        data: [31,47,44,232,164,136,101,87,91,81,89,54],
+        data: [164,136,101,87,91,81,89,78,82,80,46,51],
         borderColor: coral,
         backgroundColor: coral + '20',
         fill: true,
@@ -1065,7 +1070,7 @@ new Chart(document.getElementById('engagementChart'), {
       },
       {
         label: 'Shares',
-        data: [3,4,2,21,19,10,10,7,4,5,5,4],
+        data: [19,10,10,7,4,5,5,4,4,7,0,1],
         borderColor: gold,
         backgroundColor: gold + '20',
         fill: true,
@@ -1091,9 +1096,9 @@ new Chart(document.getElementById('engagementChart'), {
 new Chart(document.getElementById('reactionChart'), {
   type: 'doughnut',
   data: {
-    labels: ['Like','Appreciation','Empathy','Praise','Interest','Entertainment','Maybe'],
+    labels: ['Like','Appreciation','Praise','Empathy','Interest','Entertainment','Maybe'],
     datasets: [{
-      data: [8166,3266,3091,3025,1411,208,33],
+      data: [8552,3719,3477,3384,1749,275,33],
       backgroundColor: [teal, coral, gold, peach, mint, rose, tealDark],
       borderWidth: 2,
       borderColor: '#fff'
@@ -1124,10 +1129,10 @@ new Chart(document.getElementById('reactionChart'), {
 new Chart(document.getElementById('companiesChart'), {
   type: 'bar',
   data: {
-    labels: ['Akamai','Bixal','MIT Sloan','Clarks','Arcadia','Biogen','Google','Amazon','AWS','Microsoft'],
+    labels: ['Akamai','Bixal','MIT Sloan','Clarks','Arcadia','Biogen','Amazon','Google','AWS','Microsoft'],
     datasets: [{
       label: 'Connections',
-      data: [77,54,33,29,27,21,19,18,18,12],
+      data: [74,48,33,27,22,19,17,17,17,11],
       backgroundColor: [coral, teal, gold, peach, mint, rose, teal, coral, gold, peach],
       borderRadius: 4
     }]
@@ -1151,7 +1156,7 @@ new Chart(document.getElementById('endorsementChart'), {
     labels: ['E-commerce','Digital Marketing','Social Media Mktg','Strategy','Marketing','Social Media','Marketing Strategy','Integrated Marketing','Leadership','Email Marketing','Brand Management','Online Marketing','Public Relations','Digital Strategy','Analytics'],
     datasets: [{
       label: 'Endorsements',
-      data: [74,49,38,35,34,28,26,24,20,18,12,11,10,10,9],
+      data: [73,49,38,35,34,28,26,24,20,18,12,11,10,10,9],
       backgroundColor: [
         coral,teal,gold,peach,mint,rose,coral,teal,gold,peach,mint,rose,coral,teal,gold
       ],
@@ -1176,10 +1181,10 @@ new Chart(document.getElementById('endorsementChart'), {
 new Chart(document.getElementById('industryChart'), {
   type: 'bar',
   data: {
-    labels: ['Consulting/Advisory','Marketing/Creative','Technology/Software','Independent/Founders','Education/Academia','Pharma/Healthcare','AI/ML','Legal/LegalTech','Finance/VC','Operations/Strategy','Design/UX','Big Tech (FAANG+)','Retail/Consumer','HR/People Ops','Energy/CleanTech'],
+    labels: ['Consulting/Advisory','Marketing/Creative','Independent/Founders','Technology/Software','AI/ML','Education/Academia','Pharma/Healthcare','Legal/LegalTech','Finance/VC','Operations/Strategy','Design/UX','Retail/Consumer','Big Tech (FAANG+)','HR/People Ops','Energy/CleanTech'],
     datasets: [{
       label: 'Connections',
-      data: [427,344,283,277,233,219,209,115,103,91,86,81,77,75,58],
+      data: [447,333,320,307,264,233,217,123,111,94,84,77,76,74,57],
       backgroundColor: [teal,coral,gold,peach,mint,rose,teal,coral,gold,peach,mint,rose,teal,coral,gold],
       borderRadius: 4
     }]
@@ -1193,7 +1198,7 @@ new Chart(document.getElementById('industryChart'), {
       tooltip: {
         callbacks: {
           afterLabel: ctx => {
-            const pcts = [11.2,9.0,7.4,7.3,6.1,5.7,5.5,3.0,2.7,2.4,2.3,2.1,2.0,2.0,1.5];
+            const pcts = [11.2,8.3,8.0,7.7,6.6,5.8,5.4,3.1,2.8,2.4,2.1,1.9,1.9,1.9,1.4];
             return pcts[ctx.dataIndex] + '% of network';
           }
         }
@@ -1241,9 +1246,9 @@ new Chart(document.getElementById('followsThemeChart'), {
 });
 
 // 3. Posts vs Connections Correlation
-const corrMonths = ['Jan 24','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan 25','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan 26','Feb'];
-const postData = [0,0,1,0,1,1,0,1,1,2,2,0,3,3,3,4,2,21,19,10,10,7,4,5,5,4];
-const connData = [29,42,22,19,15,10,13,9,10,12,7,9,16,24,13,61,30,77,63,36,97,61,74,45,93,30];
+const corrMonths = ['Jan 24','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan 25','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan 26','Feb','Mar','Apr','May','Jun'];
+const postData = [0,0,1,0,1,1,0,1,1,2,2,0,3,3,3,4,2,21,19,10,10,7,4,5,5,4,4,7,0,1];
+const connData = [29,41,22,19,15,10,13,9,10,12,7,9,16,24,13,61,30,76,63,36,97,61,74,45,93,41,33,52,46,50];
 
 new Chart(document.getElementById('correlationChart'), {
   type: 'bar',
@@ -1301,9 +1306,9 @@ new Chart(document.getElementById('correlationChart'), {
 new Chart(document.getElementById('relDepthChart'), {
   type: 'doughnut',
   data: {
-    labels: ['Never Messaged (64.6%)','Dormant 2+ yrs (25.9%)','Going Stale 1-2 yrs (1.9%)','Some Contact 6-12 mo (3.4%)','Active < 6 mo (4.2%)'],
+    labels: ['Never Messaged (64.8%)','Dormant 2+ yrs (24.8%)','Going Stale 1-2 yrs (3.6%)','Some Contact 6-12 mo (3.6%)','Active < 6 mo (3.2%)'],
     datasets: [{
-      data: [2461, 988, 72, 129, 161],
+      data: [2589, 992, 144, 145, 128],
       backgroundColor: ['#e0e0e0', rose, peach, gold, teal],
       borderWidth: 2,
       borderColor: '#fff'
@@ -1333,7 +1338,7 @@ new Chart(document.getElementById('invDirectionDonut'), {
   data: {
     labels: ['You Reached Out', 'They Reached Out'],
     datasets: [{
-      data: [300, 161],
+      data: [135, 189],
       backgroundColor: [teal, coral],
       borderWidth: 3,
       borderColor: '#fff'
@@ -1353,17 +1358,17 @@ new Chart(document.getElementById('invDirectionDonut'), {
 new Chart(document.getElementById('invTrendChart'), {
   type: 'bar',
   data: {
-    labels: ['Sep 25','Oct','Nov','Dec','Jan 26','Feb'],
+    labels: ['Jan 26','Feb','Mar','Apr','May','Jun'],
     datasets: [
       {
         label: 'Outbound (You)',
-        data: [94,32,60,23,81,10],
+        data: [63,12,16,17,13,14],
         backgroundColor: teal,
         borderRadius: 4
       },
       {
         label: 'Inbound (Them)',
-        data: [28,31,28,29,30,15],
+        data: [28,22,23,41,34,41],
         backgroundColor: coral,
         borderRadius: 4
       }
@@ -1386,17 +1391,17 @@ new Chart(document.getElementById('invTrendChart'), {
 new Chart(document.getElementById('recentConnsChart'), {
   type: 'bar',
   data: {
-    labels: ['Dec 2025', 'Jan 2026', 'Feb 2026'],
+    labels: ['Apr 2026', 'May 2026', 'Jun 2026'],
     datasets: [
       {
         label: 'You Initiated',
-        data: [25, 55, 15],
+        data: [14, 13, 11],
         backgroundColor: teal,
         borderRadius: 4
       },
       {
         label: 'They Initiated',
-        data: [35, 23, 14],
+        data: [38, 33, 37],
         backgroundColor: coral,
         borderRadius: 4
       }
@@ -1421,10 +1426,10 @@ new Chart(document.getElementById('recentConnsChart'), {
 new Chart(document.getElementById('seniorityChart'), {
   type: 'bar',
   data: {
-    labels: ['Director / Head','Mid-Level / Other','C-Suite / Owner','Founder','Senior IC / Lead','VP Level','Manager','Consultant / Advisor','Early Career','Academic / Educator'],
+    labels: ['Director / Head','Mid-Level / Other','Founder','C-Suite / Owner','Senior IC / Lead','VP Level','Manager','Consultant / Advisor','Early Career','Academic / Educator'],
     datasets: [{
       label: 'Connections',
-      data: [725,718,471,434,433,328,281,212,128,81],
+      data: [752,746,509,491,453,333,275,224,130,85],
       backgroundColor: [coral,'#cfcfcf',teal,rose,gold,peach,mint,teal,gold,coral],
       borderRadius: 4
     }]
@@ -1438,7 +1443,7 @@ new Chart(document.getElementById('seniorityChart'), {
       tooltip: {
         callbacks: {
           afterLabel: ctx => {
-            const pcts = [19.0,18.8,12.4,11.4,11.4,8.6,7.4,5.6,3.4,2.1];
+            const pcts = [18.8,18.7,12.7,12.3,11.3,8.3,6.9,5.6,3.3,2.1];
             return pcts[ctx.dataIndex] + '% of network';
           }
         }
@@ -1455,10 +1460,10 @@ new Chart(document.getElementById('seniorityChart'), {
 new Chart(document.getElementById('functionChart'), {
   type: 'bar',
   data: {
-    labels: ['Founder / Startup','Consulting / Strategy','Marketing / Comms','Sales / BD','AI / Data Science','Operations','Engineering','Legal / Compliance','Education','Finance','Design / UX','Product','HR / People','Program Mgmt','Coach / Speaker'],
+    labels: ['Founder / Startup','Consulting / Strategy','Marketing / Comms','AI / Data Science','Sales / BD','Operations','Engineering','Legal / Compliance','Education','Design / UX','Finance','HR / People','Product','Program Mgmt','Coach / Speaker'],
     datasets: [{
       label: 'Connections',
-      data: [417,371,270,176,149,147,113,111,97,85,79,77,75,71,50],
+      data: [482,384,259,178,176,154,126,117,99,85,84,77,76,63,56],
       backgroundColor: [coral,teal,gold,mint,peach,rose,coral,teal,gold,mint,peach,rose,coral,teal,gold],
       borderRadius: 4
     }]
@@ -1472,7 +1477,7 @@ new Chart(document.getElementById('functionChart'), {
       tooltip: {
         callbacks: {
           afterLabel: ctx => {
-            const pcts = [10.9,9.7,7.1,4.6,3.9,3.9,3.0,2.9,2.5,2.2,2.1,2.0,2.0,1.9,1.3];
+            const pcts = [12.1,9.6,6.5,4.5,4.4,3.9,3.2,2.9,2.5,2.1,2.1,1.9,1.9,1.6,1.4];
             return pcts[ctx.dataIndex] + '% of network';
           }
         }
@@ -1489,18 +1494,18 @@ new Chart(document.getElementById('functionChart'), {
 new Chart(document.getElementById('engByFunctionChart'), {
   type: 'bar',
   data: {
-    labels: ['HR / People','Legal','Finance','Consulting','Product','Coach/Speaker','Founder','Design / UX','Operations','Program Mgmt','Marketing','AI / Data','Engineering','Sales / BD','Education'],
+    labels: ['HR / People','Consulting','Coach/Speaker','Legal','Finance','Founder','Product','AI / Data','Program Mgmt','Design / UX','Operations','Engineering','Marketing','Sales / BD','Education'],
     datasets: [
       {
         label: 'Engagement Rate %',
-        data: [49,45,44,43,43,42,41,34,34,34,31,31,29,28,25],
+        data: [51,44,43,42,42,40,40,38,37,32,30,29,29,28,28],
         backgroundColor: teal,
         borderRadius: 4,
         yAxisID: 'y'
       },
       {
         label: 'Avg Messages',
-        data: [2.8,1.6,1.8,2.9,5.7,2.1,2.9,4.3,4.6,7.2,4.2,2.3,2.4,1.2,0.6],
+        data: [4.3,3.1,2.0,1.8,2.1,2.6,5.2,3.2,8.0,3.9,2.7,3.2,4.3,1.2,0.8],
         type: 'line',
         borderColor: coral,
         backgroundColor: coral,
@@ -1529,7 +1534,7 @@ new Chart(document.getElementById('engByFunctionChart'), {
       },
       y1: {
         beginAtZero: true,
-        max: 8,
+        max: 9,
         position: 'right',
         title: { display: true, text: 'Avg Messages', font: { size: 11 } },
         grid: { display: false }
@@ -1547,7 +1552,7 @@ new Chart(document.getElementById('engBySeniorityChart'), {
     datasets: [
       {
         label: 'Engagement Rate %',
-        data: [44,43,42,38,33,33,31,30,25,18],
+        data: [42,41,40,38,36,32,31,30,27,21],
         backgroundColor: [teal,teal,teal,teal,gold,gold,gold,peach,peach,rose],
         borderRadius: 4
       }
@@ -1561,8 +1566,8 @@ new Chart(document.getElementById('engBySeniorityChart'), {
       tooltip: {
         callbacks: {
           afterLabel: ctx => {
-            const counts = [471,212,434,725,328,433,281,718,81,128];
-            const avgMsgs = [2.4,2.7,2.9,3.2,2.8,3.7,2.7,1.7,0.6,0.5];
+            const counts = [491,224,509,752,333,453,275,746,85,130];
+            const avgMsgs = [2.1,2.8,2.6,3.4,3.4,2.9,2.7,2.0,0.8,0.7];
             return `${counts[ctx.dataIndex]} connections | Avg ${avgMsgs[ctx.dataIndex]} msgs`;
           }
         }
@@ -1579,17 +1584,17 @@ new Chart(document.getElementById('engBySeniorityChart'), {
 new Chart(document.getElementById('audienceShiftChart'), {
   type: 'bar',
   data: {
-    labels: ['Founder','AI / Data','Legal','Consulting','Marketing','Sales / BD','Operations','Coach/Speaker','Education','Design / UX','Engineering','Product','HR','Program Mgmt','Finance'],
+    labels: ['Founder','AI / Data','Consulting','Legal','Marketing','Operations','Sales / BD','Coach/Speaker','Education','Design / UX','Engineering','HR','Product','Program Mgmt','Finance'],
     datasets: [
       {
         label: 'Pre-2024 %',
-        data: [14.6,4.0,2.0,17.9,12.9,8.8,7.2,1.5,4.7,4.0,6.1,4.0,4.1,3.7,4.7],
+        data: [15.8,4.2,17.8,2.1,12.0,7.1,8.7,1.6,4.6,3.9,6.4,4.1,3.9,3.3,4.5],
         backgroundColor: peach + '90',
         borderRadius: 3
       },
       {
         label: '2025+ %',
-        data: [28.2,14.2,13.2,11.3,8.6,4.7,4.5,4.3,3.5,1.9,1.6,1.2,1.2,1.2,0.6],
+        data: [29.4,15.5,11.6,11.3,7.4,4.6,4.0,4.0,3.1,2.6,2.6,1.2,1.1,0.8,0.6],
         backgroundColor: teal,
         borderRadius: 3
       }
@@ -1603,8 +1608,8 @@ new Chart(document.getElementById('audienceShiftChart'), {
       tooltip: {
         callbacks: {
           afterBody: ctx => {
-            const preRaw = [241,66,33,295,213,145,118,24,77,66,100,66,67,61,78];
-            const postRaw = [145,73,68,58,44,24,23,22,18,10,8,6,6,6,3];
+            const preRaw = [260,70,293,34,198,117,143,26,76,65,106,67,64,55,74];
+            const postRaw = [190,100,75,73,48,30,26,26,20,17,17,8,7,5,4];
             const idx = ctx[0].dataIndex;
             return `Pre-2024: ${preRaw[idx]} people | 2025+: ${postRaw[idx]} people`;
           }
